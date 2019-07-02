@@ -4,7 +4,9 @@ import Wrapper from "./components/Wrapper";
 import Title from "./components/Title";
 import friends from "./friends.json";
 
+
 let points = 0;
+let highScore = 0;
 let friendArr = friends;
 class App extends Component {
   // Setting this.state.friends to the friends json array
@@ -13,25 +15,12 @@ class App extends Component {
     friendArr,
   };
 
-  // friendClick = id => {
-  //   const friends = this.state.friends.filter(friend => friend.id !== id);
-
-  // }
-
   // removeFriend = id => {
   //   // Filter this.state.friends for friends with an id not equal to the id being removed
   //   const friends = this.state.friends.filter(friend => friend.id !== id);
   //   // Set this.state.friends equal to the new friends array
   //   this.setState({ friends });
   // };
-  processClick = (id) => {
-    // const friendClicked = this.state.friendArr.filter(friend => friend.id ===id);
-    const friendClicked= this.state.friendArr.filter(friend => friend.id === id)
-    if (friendClicked["clicked"] === "n") {
-      points++;
-      console.log(points);
-    }
-  }
 
   restart = () => {
     for (var i = 0 ; i <friendArr.length; i++) {
@@ -41,7 +30,6 @@ class App extends Component {
     points = 0;
   }
 
-  // unclickFriend = () 
 
   markClicked = (id) => {
     const friendClicked = this.state.friendArr.filter(friend => friend.id === id);
@@ -63,14 +51,21 @@ class App extends Component {
     this.state.friendArr.sort((() => Math.random() - 0.5));
     // this.render();
   }
-
+  
+  getInstruction = () => {
+    if (points === 0) {
+      return ("Click a character to begin")
+    } else {
+      return ("You guessed correctly!")
+    }
+  }
   // Map over this.state.friends and render a FriendCard component for each friend object
   render() {
     return (
       <Wrapper>
         {/* <Navbar></Navbar> */}
-        <Title>{title} {points}</Title>
-
+        <Title title={title} points={points} highScore={highScore} instruction={this.getInstruction()}></Title>
+        <div style={divStyle}></div>
         {friendArr.map(friend => (
           <FriendCard
             markClicked={this.markClicked}
@@ -89,5 +84,8 @@ class App extends Component {
 }
 
 const title = "Clicky Game";
-
+const divStyle = {
+  height:'50px',
+  width: '100%'
+}
 export default App;
